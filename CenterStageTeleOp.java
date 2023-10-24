@@ -1,4 +1,4 @@
-    /* Copyright (c) 2017 FIRST. All rights reserved.
+/* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -31,11 +31,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -52,7 +52,6 @@ public class CenterStageTeleOp extends OpMode {
   private Servo gripper = null;
   private Servo wrist = null;
   private Servo launch = null;
-
 
   private boolean manualMode = false;
   private double armSetpoint = 0.0;
@@ -74,16 +73,16 @@ public class CenterStageTeleOp extends OpMode {
   /*
    * Code to run ONCE when the driver hits INIT
    */
-   
-     private DigitalChannel RedLight;
-     private DigitalChannel redLight;
-     private DigitalChannel greenLight;
-     private DigitalChannel GreenLight;
-   
+
+  private DigitalChannel RedLight;
+  private DigitalChannel redLight;
+  private DigitalChannel greenLight;
+  private DigitalChannel GreenLight;
+
   @Override
   public void init() {
     telemetry.addData("Status", "Initialized");
-    
+
     RedLight = hardwareMap.get(DigitalChannel.class, "Red");
     redLight = hardwareMap.get(DigitalChannel.class, "red");
     greenLight = hardwareMap.get(DigitalChannel.class, "green");
@@ -118,9 +117,7 @@ public class CenterStageTeleOp extends OpMode {
   /*
    * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
    */
-   
-  
-   
+
   @Override
   public void init_loop() {}
 
@@ -130,10 +127,9 @@ public class CenterStageTeleOp extends OpMode {
   @Override
   public void start() {
     runtime.reset();
-    
-     launch.setPosition(launchUpPosition);
 
-  
+    launch.setPosition(launchUpPosition);
+
     armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     armLeft.setTargetPosition(armHomePosition);
@@ -153,43 +149,41 @@ public class CenterStageTeleOp extends OpMode {
     greenLight.setState(true);
     redLight.setState(true);
     RedLight.setState(true);
-    
+
     double leftPower;
     double rightPower;
     double manualArmPower;
     double drive;
-    
-   
-    
+
     RedLight.setMode(DigitalChannel.Mode.OUTPUT);
     redLight.setMode(DigitalChannel.Mode.OUTPUT);
     greenLight.setMode(DigitalChannel.Mode.OUTPUT);
     GreenLight.setMode(DigitalChannel.Mode.OUTPUT);
-    
-    if (gamepad1.back){
+
+    if (gamepad1.back) {
       launch.setPosition(launchDownPosition);
     }
-    
+
     //LED lighting signals
-    if (gamepad1.dpad_left){
+    if (gamepad1.dpad_left) {
       GreenLight.setState(true);
       greenLight.setState(true);
       redLight.setState(false);
       RedLight.setState(false);
     }
-    if (gamepad1.dpad_up){
+    if (gamepad1.dpad_up) {
       GreenLight.setState(true);
       greenLight.setState(true);
       redLight.setState(true);
       RedLight.setState(true);
     }
-    if (gamepad1.dpad_right){
+    if (gamepad1.dpad_right) {
       GreenLight.setState(false);
       greenLight.setState(false);
       redLight.setState(false);
       RedLight.setState(false);
     }
-    if (gamepad1.dpad_down){
+    if (gamepad1.dpad_down) {
       GreenLight.setState(false);
       greenLight.setState(false);
       redLight.setState(true);
@@ -197,9 +191,8 @@ public class CenterStageTeleOp extends OpMode {
     }
 
     //DRIVE
-    
-    if ((gamepad1.left_stick_y) >= 0.05)
-    {
+
+    if ((gamepad1.left_stick_y) >= 0.05) {
       drive = -gamepad1.left_stick_y;
     }
     double turn = -gamepad1.right_stick_x;
