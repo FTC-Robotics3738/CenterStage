@@ -52,6 +52,7 @@ public class CenterStageTeleOp extends OpMode {
   private Servo gripper = null;
   private Servo wrist = null;
   private Servo launch = null;
+  private Servo latch = null;
 
   private boolean manualMode = false;
   private double armSetpoint = 0.0;
@@ -64,6 +65,8 @@ public class CenterStageTeleOp extends OpMode {
   private final double wristDownPosition = 0.2;
   private final double launchUpPosition = 1.0;
   private final double launchDownPosition = 0.0;
+  private final double latchOpenPosition = 0.6;
+  private final double latchClosedPosition = 0.3;
 
   private final int armHomePosition = 0;
   private final int armIntakePosition = 10;
@@ -94,6 +97,7 @@ public class CenterStageTeleOp extends OpMode {
     gripper = hardwareMap.get(Servo.class, "gripper");
     wrist = hardwareMap.get(Servo.class, "wrist");
     launch = hardwareMap.get(Servo.class, "launch");
+    latch = hardwareMap.get(Servo.class, "latch");
 
     leftDrive.setDirection(DcMotor.Direction.FORWARD);
     rightDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -101,7 +105,7 @@ public class CenterStageTeleOp extends OpMode {
     rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
     armLeft.setDirection(DcMotor.Direction.FORWARD);
-    armRight.setDirection(DcMotor.Direction.REVERSE);
+    armRight.setDirection(DcMotor.Direction.FORWARD);
     armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -195,8 +199,9 @@ public class CenterStageTeleOp extends OpMode {
     if ((gamepad1.left_stick_y) >= 0.05) {
       drive = -gamepad1.left_stick_y;
     }
-    double turn = -gamepad1.right_stick_x;
-    drive = -gamepad1.left_stick_y;
+
+    double turn = gamepad1.right_stick_x;
+    drive = gamepad1.left_stick_y;
     leftPower = Range.clip(drive + turn, -1.0, 1.0);
     rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
@@ -225,32 +230,18 @@ public class CenterStageTeleOp extends OpMode {
         armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         manualMode = false;
       }
+      //latch
+      if (gamepad1.x){
+        latch.setPosition(latchClosedPosition);
+      }else if (gamepad1.y){
+        latch.setPosition(latchOpenPosition);
+      }
 
       //preset buttons
       if (gamepad1.a) {
-        armLeft.setTargetPosition(armHomePosition);
-        armRight.setTargetPosition(armHomePosition);
-        armLeft.setPower(1.0);
-        armRight.setPower(1.0);
-        armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wrist.setPosition(wristUpPosition);
       } else if (gamepad1.b) {
-        armLeft.setTargetPosition(armIntakePosition);
-        armRight.setTargetPosition(armIntakePosition);
-        armLeft.setPower(1.0);
-        armRight.setPower(1.0);
-        armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         wrist.setPosition(wristDownPosition);
-      } else if (gamepad1.y) {
-        armLeft.setTargetPosition(armScorePosition);
-        armRight.setTargetPosition(armScorePosition);
-        armLeft.setPower(1.0);
-        armRight.setPower(1.0);
-        armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        wrist.setPosition(wristUpPosition);
       }
     }
 
@@ -307,6 +298,7 @@ public class CenterStageTeleOp extends OpMode {
       ((Integer) armRight.getTargetPosition()).toString()
     );
   }
+  
 
   /*
    * Code to run ONCE after the driver hits STOP
