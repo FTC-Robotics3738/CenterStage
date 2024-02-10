@@ -50,18 +50,23 @@ public class Awesome720Bot extends LinearOpMode {
     //warmArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     //coolArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     
-    frontLeft.setDirection(DcMotor.Direction.REVERSE);
-    backLeft.setDirection(DcMotor.Direction.REVERSE);
+    frontRight.setDirection(DcMotor.Direction.REVERSE);
+    backRight.setDirection(DcMotor.Direction.REVERSE);
     
     waitForStart();
     if (opModeIsActive()) {
       // Put run blocks here.
+      warmWrist.setPosition(0);
+      sleep(600);
+      coolWrist.setPosition(0);
+      
       while (opModeIsActive()) {
         // Put loop blocks here.
 
         telemetry.update();
         telemetry.addData("warmPosition", warmArm.getCurrentPosition());
-        if(gamepad1.left_bumper){
+        telemetry.addData("coolPosition", coolArm.getCurrentPosition());
+        if(gamepad2.left_bumper){
           
           if(warmArm.getCurrentPosition()>=-1900){
             while(warmArm.getCurrentPosition()>=-2200){
@@ -70,43 +75,85 @@ public class Awesome720Bot extends LinearOpMode {
               warmArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
               warmArm.setPower(0.5);
             }
-          }else if(warmArm.getCurrentPosition()<=-650){
-            while(warmArm.getCurrentPosition()<= -500){
+          }else if(warmArm.getCurrentPosition()<=-650 && warmArm.getCurrentPosition() > -300){
+            while(warmArm.getCurrentPosition()<= -500 && warmArm.getCurrentPosition() > -300){
               warmWrist.setPosition(0.7);
               warmArm.setTargetPosition(-500);
               warmArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
               warmArm.setPower(-0.5);
+              warmWrist.setPosition(0);
             }
           }
         }
         
-        if(gamepad1.right_bumper){
+        if(gamepad2.right_bumper){
           
-          if(coolArm.getCurrentPosition()>=-1900){
-            while(coolArm.getCurrentPosition()>=-2200){
+          if(coolArm.getCurrentPosition()<=1800){
+            while(coolArm.getCurrentPosition()<=2000){
               coolWrist.setPosition(0.7);
-              coolArm.setTargetPosition(-2200);
-              coolArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-              coolArm.setPower(0.5);
-            }
-          }else if(coolArm.getCurrentPosition()<=-650){
-            while(coolArm.getCurrentPosition()<= -500){
-              coolWrist.setPosition(0.7);
-              coolArm.setTargetPosition(-500);
+              coolArm.setTargetPosition(2000);
               coolArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
               coolArm.setPower(-0.5);
             }
+          }else if(coolArm.getCurrentPosition()>=550){
+            while(coolArm.getCurrentPosition()>= 0){
+              coolWrist.setPosition(0.7);
+              coolArm.setTargetPosition(0);
+              coolArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+              coolArm.setPower(0.5);
+              coolWrist.setPosition(0);
+            }
           }
+        }
+
+          turret.setPower(gamepad2.left_stick_x);
+          turret.setPower(gamepad2.right_stick_x);
+
+
+        if (gamepad1.y){
+          launch.setPosition(0.7);
         }
         
         while (gamepad1.a){
-          turret.setPower(1);
+          lift.setPower(1);
         }
-        turret.setPower(0);
+        lift.setPower(0);
+        
         while (gamepad1.b){
-          turret.setPower(-1);
+          lift.setPower(-1);
         }
-        turret.setPower(0);
+        lift.setPower(0);
+        
+        while (gamepad2.y){
+          warmArm.setPower(0.3);
+        }
+        warmArm.setPower(0);    
+
+        while (gamepad2.x){
+          coolArm.setPower(-0.3);
+        }
+        coolArm.setPower(0);
+
+        if(gamepad2.a){
+          coolArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+
+        if(gamepad2.b){
+          warmArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+        
+       while (gamepad1.x){
+          coolClaw.setPosition(1.0);
+        }
+        coolClaw.setPosition(0.1);
+    
+        
+        while (gamepad1.x) {
+          warmClaw.setPosition(1.0);
+        }
+        warmClaw.setPosition(0.1);
+
+        
         // Forwards and Back on Left Stick using the Y-axis
         frontLeft.setPower(gamepad1.left_stick_y);
         backLeft.setPower(gamepad1.left_stick_y);
