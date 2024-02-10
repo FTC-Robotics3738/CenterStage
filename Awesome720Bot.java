@@ -61,6 +61,8 @@ public class Awesome720Bot extends LinearOpMode {
 
         telemetry.update();
         telemetry.addData("warmPosition", warmArm.getCurrentPosition());
+        telemetry.addData("coolPosition", coolArm.getCurrentPosition());
+
         if(gamepad1.left_bumper){
           
           if(warmArm.getCurrentPosition()>=-1900){
@@ -103,10 +105,30 @@ public class Awesome720Bot extends LinearOpMode {
           turret.setPower(1);
         }
         turret.setPower(0);
+
         while (gamepad1.b){
           turret.setPower(-1);
         }
         turret.setPower(0);
+
+        while (gamepad1.y){
+          warmArm.setPower(0.3);
+        }
+        warmArm.setPower(0);    
+
+        while (gamepad1.x){
+          coolArm.setPower(0.3);
+        }
+        coolArm.setPower(0);
+
+        if(gamepad1.right_trigger){
+          coolArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER)
+        }
+
+        if(gamepad1.right_trigger){
+          warmArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+        
         // Forwards and Back on Left Stick using the Y-axis
         frontLeft.setPower(gamepad1.left_stick_y);
         backLeft.setPower(gamepad1.left_stick_y);
