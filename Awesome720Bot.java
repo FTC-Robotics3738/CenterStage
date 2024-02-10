@@ -108,21 +108,21 @@ public class Awesome720Bot extends LinearOpMode {
         }
         turret.setPower(0);
         // Forwards and Back on Left Stick using the Y-axis
-        frontLeft.setPower(gamepad1.left_stick_y);
-        backLeft.setPower(gamepad1.left_stick_y);
-        frontRight.setPower(-gamepad1.left_stick_y);
-        backRight.setPower(-gamepad1.left_stick_y);
+        frontLeft.setPower(gamepad2.left_stick_y);
+        backLeft.setPower(gamepad2.left_stick_y);
+        frontRight.setPower(-gamepad2.left_stick_y);
+        backRight.setPower(-gamepad2.left_stick_y);
         // Strafing on Right Stick using the X-axis
         // Move the stick right and left for the robot to slide right and left
-        frontLeft.setPower(-gamepad1.left_stick_x);
-        backLeft.setPower(gamepad1.left_stick_x);
-        frontRight.setPower(-gamepad1.left_stick_x);
-        backRight.setPower(gamepad1.left_stick_x);
+        frontLeft.setPower(-gamepad2.left_stick_x);
+        backLeft.setPower(gamepad2.left_stick_x);
+        frontRight.setPower(-gamepad2.left_stick_x);
+        backRight.setPower(gamepad2.left_stick_x);
         // Turning on Left Joystick using X-Axis
-        frontLeft.setPower(gamepad1.right_stick_x);
-        backLeft.setPower(gamepad1.right_stick_x);
-        frontRight.setPower(gamepad1.right_stick_x);
-        backRight.setPower(gamepad1.right_stick_x);
+        frontLeft.setPower(gamepad2.right_stick_x);
+        backLeft.setPower(gamepad2.right_stick_x);
+        frontRight.setPower(gamepad2.right_stick_x);
+        backRight.setPower(gamepad2.right_stick_x);
       }
     }
   }
