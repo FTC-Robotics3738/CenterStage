@@ -18,9 +18,9 @@ public class ServoTest2 extends LinearOpMode {
     public void runOpMode() {
         a = hardwareMap.get(CRServo.class, "servo");
       
-        a.setDirection(DcMotor.Direction.FORWARD);
-      
         waitForStart();
+        
+        a.setDirection(DcMotor.Direction.REVERSE);
 
         if (opModeIsActive()) {
             a.setPower(0);
